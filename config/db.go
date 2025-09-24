@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/Mohammad-Alipour/menu-api/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 var _ *gorm.DB
@@ -13,15 +14,19 @@ var _ *gorm.DB
 func ConnectDatabase() {
 	dsn := "host=localhost user=postgres password=1234 dbname=menu_api port=5432 sslmode=disable TimeZone=Asia/Tehran"
 
-	var db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal(`❌ Failed to connect to the database: `, err)
+		log.Fatal("❌ Failed to connect to the database: ", err)
 	}
 
-	// Migration
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Category{},
+		&models.Item{},
+		&models.ItemImage{},
+	)
 	if err != nil {
-		return
+		log.Fatal("❌ Migration failed: ", err)
 	}
 
 	_ = db
