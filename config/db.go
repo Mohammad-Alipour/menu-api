@@ -13,14 +13,17 @@ var _ *gorm.DB
 func ConnectDatabase() {
 	dsn := "host=localhost user=postgres password=1234 dbname=menu_api port=5432 sslmode=disable TimeZone=Asia/Tehran"
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	var db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("❌ اتصال به دیتابیس ناموفق بود: ", err)
+		log.Fatal(`❌ Failed to connect to the database: `, err)
 	}
 
 	// Migration
-	db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.User{})
+	if err != nil {
+		return
+	}
 
 	_ = db
-	fmt.Println("✅ اتصال به دیتابیس برقرار شد و Migration انجام شد")
+	fmt.Println("✅ Database connection established and migration completed")
 }
