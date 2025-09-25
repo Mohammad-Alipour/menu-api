@@ -2,24 +2,18 @@ package main
 
 import (
 	"github.com/Mohammad-Alipour/menu-api/config"
-
+	"github.com/Mohammad-Alipour/menu-api/routes"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	//ConnectDatabase
 	config.ConnectDatabase()
 
 	r := gin.Default()
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	routes.RegisterRoutes(r)
 
-	err := r.Run(":8080")
-	if err != nil {
-		return
+	if err := r.Run(":8080"); err != nil {
+		panic("❌ Server failed to start: " + err.Error())
 	}
 }
