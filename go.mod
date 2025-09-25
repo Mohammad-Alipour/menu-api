@@ -4,7 +4,6 @@ go 1.24.6
 
 require (
 	github.com/gin-gonic/gin v1.11.0
-	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	golang.org/x/crypto v0.42.0
 	gorm.io/driver/postgres v1.6.0
